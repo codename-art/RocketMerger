@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
@@ -23,15 +22,16 @@ import java.util.List;
 @ComponentScan
 public class Webhook {
 
-    @Autowired DBService dbService;
+    @Autowired
+    DBService dbService;
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Webhook.class, args);
+    }
 
     @RequestMapping("/")
     @ResponseStatus(HttpStatus.OK)
     void process(@RequestBody List<Message> payload) {
         payload.stream().map(Message::getMessage).forEach(dbService::savePokemon);
-    }
-
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Webhook.class, args);
     }
 }

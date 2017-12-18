@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by Artem on 18.12.2017.
  */
@@ -11,8 +13,11 @@ import org.springframework.stereotype.Service;
 @EnableAsync
 public class DBService {
     @SuppressWarnings("SpringJavaAutowiringInspection")
-    @Autowired PokemonRepository pokemonRepository;
+    @Autowired
+    PokemonRepository pokemonRepository;
+
     public void savePokemon(Pokemon pokemon) {
+        pokemon.setLast_modified(new Date());
         pokemonRepository.save(pokemon);
     }
 }
