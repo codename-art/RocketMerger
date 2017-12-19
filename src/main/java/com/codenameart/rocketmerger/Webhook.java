@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Artem on 18.12.2017.
@@ -32,6 +33,7 @@ public class Webhook {
     @RequestMapping("/")
     @ResponseStatus(HttpStatus.OK)
     void process(@RequestBody List<Message> payload) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         payload.stream().map(Message::getMessage).forEach(dbService::savePokemon);
     }
 }
