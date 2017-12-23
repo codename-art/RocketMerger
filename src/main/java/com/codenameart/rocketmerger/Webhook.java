@@ -60,7 +60,7 @@ public class Webhook {
     @PostConstruct
     public void startDBLoop() {
         ExecutorService executorService = Executors.newFixedThreadPool(dbWriterCount);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < dbWriterCount; i++) {
             DBWriter bean = context.getBean(DBWriter.class);
             executorService.execute(bean);
         }
