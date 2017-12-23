@@ -2,6 +2,7 @@ package com.codenameart.rocketmerger.q;
 
 import com.codenameart.rocketmerger.Pokemon;
 import com.codenameart.rocketmerger.PokemonRepository;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,21 +26,25 @@ public class DBWriter implements Runnable {
     public void run() {
         log.info("Starting queue DBWriter");
         while (true) {
-            if (Thread.currentThread().isInterrupted()) {
-                return;
-            }
-
-            Pokemon pokemon = queue.poll();
-            if (pokemon == null) { // queue is empty
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
+            try {
+                if (Thread.currentThread().isInterrupted()) {
                     return;
                 }
-            } else {
-                pokemon.setLast_modified(new Date());
-                log.info("Queue length: " + queue.size());
-                pokemonRepository.save(pokemon);
+
+                Pokemon pokemon = queue.poll();
+                if (pokemon == null) { // queue is empty
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                } else {
+                    pokemon.setLast_modified(new Date());
+                    log.info("Queue length: " + queue.size());
+                    pokemonRepository.save(pokemon);
+                }
+            } catch (Exception e) {
+                log.error("Exception on db loop", e);
             }
         }
     }

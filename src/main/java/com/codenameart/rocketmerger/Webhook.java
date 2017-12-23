@@ -5,6 +5,7 @@ import com.codenameart.rocketmerger.q.DBWriter;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -36,8 +37,13 @@ public class Webhook {
     @Autowired
     DBWriter dbWriter;
 
+
     @Autowired
     private ApplicationContext context;
+
+
+    @Value("${dbwriter.count}")
+    int dbWriterCount;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Webhook.class, args);
@@ -53,7 +59,7 @@ public class Webhook {
 
     @PostConstruct
     public void startDBLoop() {
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        ExecutorService executorService = Executors.newFixedThreadPool(dbWriterCount);
         for (int i = 0; i < 10; i++) {
             DBWriter bean = context.getBean(DBWriter.class);
             executorService.execute(bean);
