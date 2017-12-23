@@ -3,4 +3,4 @@ server.port=8282
 spring.datasource.url=jdbc:mysql://localhost:3306/pgo
 spring.datasource.username=
 spring.datasource.password=
-dbwriter.count=3
+dbwriter.count=2
