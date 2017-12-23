@@ -1,5 +1,7 @@
 package com.codenameart.rocketmerger;
 
+import com.codenameart.rocketmerger.q.DBQueue;
+import com.codenameart.rocketmerger.q.DBWriter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -24,7 +27,10 @@ import java.util.TimeZone;
 public class Webhook {
 
     @Autowired
-    DBService dbService;
+    DBQueue dbQueue;
+
+    @Autowired
+    DBWriter dbWriter;
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Webhook.class, args);
@@ -34,6 +40,13 @@ public class Webhook {
     @ResponseStatus(HttpStatus.OK)
     void process(@RequestBody List<Message> payload) {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        payload.stream().map(Message::getMessage).forEach(dbService::savePokemon);
+        payload.stream().map(Message::getMessage).forEach(dbQueue::offer);
+    }
+
+    @PostConstruct
+    public void startDBLoop() {
+        for (int i = 0; i < 10; i++) {
+            dbWriter.startLoop();
+        }
     }
 }
