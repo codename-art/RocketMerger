@@ -2,15 +2,16 @@ package com.codenameart.rocketmerger.q;
 
 import com.codenameart.rocketmerger.Pokemon;
 import com.codenameart.rocketmerger.PokemonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.Date;
 
 /**
  * Created by Artem on 23.12.2017.
  */
-public class DBWriter {
+@Slf4j
+public class DBWriter implements Runnable {
     @Autowired
     DBQueue queue;
 
@@ -20,8 +21,9 @@ public class DBWriter {
     PokemonRepository pokemonRepository;
 
 
-    @Async
-    public void startLoop(){
+    @Override
+    public void run() {
+        log.info("Starting queue DBWriter");
         while (true) {
             if (Thread.currentThread().isInterrupted()) {
                 return;
@@ -36,6 +38,7 @@ public class DBWriter {
                 }
             } else {
                 pokemon.setLast_modified(new Date());
+                log.info("Queue length: " + queue.size());
                 pokemonRepository.save(pokemon);
             }
         }
