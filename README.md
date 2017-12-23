@@ -3,16 +3,16 @@ RocketMerger receives webhook data (via POST requests) from
 Another RocketMap instance with -os parameter can use this database to show pokemons on map.
 
 **Currently only accepts pokemon data.**
-#### Motivation and Context 
+## Motivation and Context 
 In huge maps consisting of many instances  with a large number of workers,
 operations with the database are a bottle neck.
 
 Separating frontend and backend databases reducethe impact of user's requests.
 Also reduce database locks if scanning instances use separate databases.
 
-#### Usage
+## Usage
 RocketMap database should be created first.
-##### Using prebuilded jar
+### Using prebuilded jar
 1. Download latest [release](https://github.com/codename-art/RocketMerger/releases).
 2. Create application.properties file with flowing fields:
 ```properties
@@ -29,7 +29,7 @@ dbwriter.count=2
 java -jar RocketMerger*.jar
 ```
 
-##### Using latest source code
+### Using latest source code
 1. `git clone`
 2. Create application.properties same as above.
 3. Build jar:
