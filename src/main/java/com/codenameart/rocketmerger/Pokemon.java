@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -21,9 +22,9 @@ public class Pokemon {
     }
 
     @Id
-    String encounter_id;
-    String spawnpoint_id;
-    String pokemon_id;
+    BigInteger encounter_id;
+    BigInteger spawnpoint_id;
+    BigInteger pokemon_id;
     double latitude;
     double longitude;
     @JsonDeserialize(using = DisappearTimeDeserializer.class)
@@ -39,7 +40,6 @@ public class Pokemon {
     float height;
     short gender;
     short form;
-    short weather_id;
     Date last_modified;
 
 }
