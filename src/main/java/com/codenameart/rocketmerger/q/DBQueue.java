@@ -1,26 +1,24 @@
 package com.codenameart.rocketmerger.q;
 
-import com.codenameart.rocketmerger.Pokemon;
+import com.codenameart.rocketmerger.envelope.WHData;
 
 import java.util.AbstractQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Artem on 23.12.2017.
  */
 public class DBQueue {
-    private AbstractQueue<Pokemon> queue;
+    private AbstractQueue<WHData> queue;
 
-    public DBQueue(AbstractQueue<Pokemon> queue) {
+    public DBQueue(AbstractQueue<WHData> queue) {
         this.queue = queue;
     }
 
-    public boolean offer(Pokemon pokemon) {
-        return queue.offer(pokemon);
+    public boolean offer(WHData whData) {
+        return queue.offer(whData);
     }
 
-    public Pokemon poll() {
+    public WHData poll() {
         return queue.poll();
     }
 

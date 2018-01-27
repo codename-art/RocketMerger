@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by Artem on 18.12.2017.
  */
-public class DisappearTimeDeserializer extends JsonDeserializer<Date> {
+public class DissapearTimeDeserializer extends JsonDeserializer<Date> {
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         Long timestamp = p.readValueAs(Long.class);

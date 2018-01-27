@@ -1,5 +1,6 @@
-package com.codenameart.rocketmerger;
+package com.codenameart.rocketmerger.envelope;
 
+import com.codenameart.rocketmerger.DissapearTimeDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.Date;
 @Builder
 @Entity
 @AllArgsConstructor
-public class Pokemon {
+public class Pokemon implements WHData {
     public Pokemon() {
     }
 
@@ -27,7 +28,7 @@ public class Pokemon {
     BigInteger pokemon_id;
     double latitude;
     double longitude;
-    @JsonDeserialize(using = DisappearTimeDeserializer.class)
+    @JsonDeserialize(using = DissapearTimeDeserializer.class)
     Date disappear_time;
     short individual_attack;
     short individual_defense;

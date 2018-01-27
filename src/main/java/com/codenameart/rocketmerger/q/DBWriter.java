@@ -1,8 +1,6 @@
 package com.codenameart.rocketmerger.q;
 
-import com.codenameart.rocketmerger.Pokemon;
-import com.codenameart.rocketmerger.PokemonRepository;
-import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import com.codenameart.rocketmerger.envelope.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +18,12 @@ public class DBWriter implements Runnable {
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     PokemonRepository pokemonRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    GymRepository gymRepository;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    RaidRepository raidRepository;
 
 
     @Override
@@ -31,18 +35,31 @@ public class DBWriter implements Runnable {
                     return;
                 }
 
-                Pokemon pokemon = queue.poll();
-                if (pokemon == null) { // queue is empty
+                WHData whData = queue.poll();
+
+                if (whData == null) { // queue is empty
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         return;
                     }
                 } else {
-                    pokemon.setLast_modified(new Date());
-                    log.info("Queue length: " + queue.size());
-                    pokemonRepository.save(pokemon);
+                    log.info("Receive ["+whData.getClass().getSimpleName()+"], new queue length: " + queue.size());
+                    if (whData instanceof Pokemon) {
+                        Pokemon pokemon = (Pokemon) whData;
+                        pokemon.setLast_modified(new Date());
+                        pokemonRepository.save(pokemon);
+                    } else if (whData instanceof Gym){
+                        Gym gym = (Gym) whData;
+                        gym.setLast_scanned(new Date());
+                        gymRepository.save(gym);
+                    } else if (whData instanceof Raid){
+                        Raid raid = (Raid) whData;
+                        raid.setLast_scanned(new Date());
+                        raidRepository.save(raid);
+                    }
                 }
+
             } catch (Exception e) {
                 log.error("Exception on db loop", e);
             }

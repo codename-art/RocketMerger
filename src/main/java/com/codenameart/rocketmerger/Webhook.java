@@ -1,8 +1,8 @@
 package com.codenameart.rocketmerger;
 
+import com.codenameart.rocketmerger.envelope.Message;
 import com.codenameart.rocketmerger.q.DBQueue;
 import com.codenameart.rocketmerger.q.DBWriter;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,7 +55,7 @@ public class Webhook {
     void process(@RequestBody List<Message> payload) {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         log.debug("Message received");
-        payload.stream().map(Message::getMessage).forEach(dbQueue::offer);
+        payload.stream().map(Message::getMessage).filter(Objects::nonNull).forEach(dbQueue::offer);
     }
 
     @PostConstruct

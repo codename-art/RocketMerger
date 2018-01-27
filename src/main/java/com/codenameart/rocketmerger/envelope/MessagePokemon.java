@@ -1,15 +1,13 @@
-package com.codenameart.rocketmerger;
+package com.codenameart.rocketmerger.envelope;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 /**
- * Created by Artem on 18.12.2017.
+ * Created by Artem on 26.01.2018.
  */
-public class Message {
+public class MessagePokemon extends Message {
     @Getter
     @JsonProperty("message")
     Pokemon message;
-    @JsonProperty("type")
-    String type;
 }
