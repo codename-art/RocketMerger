@@ -15,7 +15,6 @@ import java.util.Date;
  * Created by Artem on 18.12.2017.
  */
 @Data
-@Builder
 @Entity
 @AllArgsConstructor
 public class Gym implements WHData {

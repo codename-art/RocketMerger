@@ -15,7 +15,6 @@ import java.util.Date;
  * Created by Artem on 18.12.2017.
  */
 @Data
-@Builder
 @Entity
 @AllArgsConstructor
 public class Pokemon implements WHData {
@@ -42,5 +41,6 @@ public class Pokemon implements WHData {
     short gender;
     short form;
     Date last_modified;
+    Short weather_boosted_condition;
 
 }
